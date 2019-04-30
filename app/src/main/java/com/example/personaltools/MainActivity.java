@@ -4,16 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
-//111 1 66666666 555
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);//11dsad
+        setContentView(R.layout.activity_main);
 
 
-
-        //ddad 1111
-        //22
-        //33 44
     }
 }
