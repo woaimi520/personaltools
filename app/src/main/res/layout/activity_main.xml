@@ -23,7 +23,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recy_01"
-            android:layout_height="match_parent"
+            android:layout_height="300dp"
             android:layout_width="match_parent"
             android:background="#EEEEEE"
            />
@@ -34,7 +34,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recy_02"
-            android:layout_height="match_parent"
+            android:layout_height="300dp"
             android:layout_width="match_parent"
             android:background="#EEEEEE"
            />
