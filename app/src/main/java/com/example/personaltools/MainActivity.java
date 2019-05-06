@@ -3,6 +3,7 @@ package com.example.personaltools;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -34,8 +35,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void initRecyclerView() {
         try {
-            mRecytclerView01.setLayoutManager(new LinearLayoutManager(this));
-            mRecytclerView02.setLayoutManager(new LinearLayoutManager(this));
+            LinearLayoutManager lin01 = new LinearLayoutManager(this);
+            lin01.setOrientation(LinearLayoutManager.VERTICAL);   //这里是设置里面内容怎么排列的
+
+            LinearLayoutManager lin02 = new LinearLayoutManager(this);
+            lin02.setOrientation(LinearLayoutManager.VERTICAL);
+
+            mRecytclerView01.setLayoutManager(lin01);
+            mRecytclerView01.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+            mRecytclerView02.setLayoutManager(lin02);
+            mRecytclerView02.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
             MyAdapter adapter01 = new MyAdapter(mList01);
             MyAdapter adapter02 = new MyAdapter(mList02);
             mRecytclerView01.setAdapter(adapter01);
@@ -46,12 +57,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initBooks(){
-        for (int i=0;i<10;i++){
+        for (int i=0;i<20;i++){
             Book book01 = new Book(ChineseName.getName());
             mList01.add(book01);
         }
 
-        for (int i=0;i<10;i++){
+        for (int i=0;i<20;i++){
             Book book02 = new Book(ChineseName.getName());
             mList02.add(book02);
         }

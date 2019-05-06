@@ -26,14 +26,18 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:background="#EEEEEE"
-            android:orientation="vertical" />
+           />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:background="#FEFFFF" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recy_02"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:background="#EEEEEE"
-            android:orientation="vertical"/>
+           />
 
     </LinearLayout>
 
