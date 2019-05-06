@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  implements MyAdapter.OnClickListener{
     @BindView(R.id.sc)
     NestedScrollView mNesteScrollView;
     @BindView(R.id.recy_01)
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initBooks();
         initRecyclerView();
+
     }
 
     public void initRecyclerView() {
@@ -49,8 +51,15 @@ public class MainActivity extends AppCompatActivity {
 
             MyAdapter adapter01 = new MyAdapter(mList01);
             MyAdapter adapter02 = new MyAdapter(mList02);
+
+
+
             mRecytclerView01.setAdapter(adapter01);
             mRecytclerView02.setAdapter(adapter02);
+
+            adapter01.setOnclckListener(this);
+            adapter02.setOnclckListener(this);
+
         }catch(Exception e){
             System.out.println("e=" + e);
         }
@@ -69,4 +78,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void OnClick(int position) {
+        Toast.makeText(MainActivity.this, "OnClick 点击了 =" + position, Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    public void OnLongClick(int position) {
+        Toast.makeText(MainActivity.this, "OnLongClick 点击了 =" + position, Toast.LENGTH_LONG).show();
+    }
 }

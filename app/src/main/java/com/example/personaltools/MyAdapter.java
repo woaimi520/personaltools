@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
  */
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private List<Book>mBookList;
-
+    private OnClickListener listener;
     /**
      * ttep 2
      * 加载item 的布局 创建viewHolder实例
@@ -41,9 +41,23 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
      * @param i
      */
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        Book book = mBookList.get(i);
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
+        Book book = mBookList.get(position);
         viewHolder.textView.setText(book.getName());
+        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                listener.OnLongClick(position);
+                return true;
+            }
+        });
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.OnClick(position);
+            }
+        });
     }
 
     /**
@@ -78,13 +92,35 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     /**
      * ttep 3
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+      class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.textView)
          TextView textView;
+        private int i = 9;
+        private void add(){
 
-        public ViewHolder(@NonNull View itemView) {
+        }
+
+
+        private ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
     }
+
+
+
+    public interface OnClickListener {
+
+        void OnClick(int position);
+
+        void OnLongClick(int position);
+
+    }
+
+    public void setOnclckListener(OnClickListener listener){
+        this.listener = listener;
+    }
+
+
+
 }
