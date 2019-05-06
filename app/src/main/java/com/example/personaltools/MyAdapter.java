@@ -3,9 +3,11 @@ package com.example.personaltools;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ import butterknife.ButterKnife;
 /**
  *
  */
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnLongClickListener, View.OnClickListener{
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnLongClickListener, View.OnClickListener,View.OnTouchListener{
     private List<Book>mBookList;
     private OnClickListener listener;
     /**
@@ -47,6 +49,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
         viewHolder.itemView.setTag(position);
         viewHolder.itemView.setOnLongClickListener(this);
         viewHolder.itemView.setOnClickListener(this);
+        viewHolder.itemView.setOnTouchListener(this);
+        
     }
 
     /**
@@ -87,8 +91,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     @Override
     public boolean onLongClick(View v) {
         int position = (Integer)v.getTag();
-        listener.OnClick(mBookList,position);
+        listener.OnLongClick(mBookList,position);
         return true;
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        int i = event.getAction();
+        if(i==1) {
+            Toast.makeText(v.getContext(), "onTouch", Toast.LENGTH_SHORT).show();
+        }
+        return false;
     }
 
     /**

@@ -66,12 +66,12 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.OnClic
     }
 
     public void initBooks(){
-        for (int i=0;i<20;i++){
+        for (int i=0;i<30;i++){
             Book book01 = new Book(ChineseName.getName());
             mList01.add(book01);
         }
 
-        for (int i=0;i<20;i++){
+        for (int i=0;i<30;i++){
             Book book02 = new Book(ChineseName.getName());
             mList02.add(book02);
         }
