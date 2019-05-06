@@ -1,5 +1,6 @@
 package com.example.personaltools;
 
+import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -56,6 +57,89 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.OnClic
 
             mRecytclerView01.setAdapter(adapter01);
             mRecytclerView02.setAdapter(adapter02);
+            mRecytclerView01.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+                                                     /**
+                                                      *
+                                                      * @param recyclerView
+                                                      * @param newState 当前滚动状态  SCROLL_STATE_IDLE 0：没滚动 ，SCROLL_STATE_DRAGGING 1：手指拉着滚动 ，CROLL_STATE_SETTLING 2 自动惯性滚动
+                                                      */
+                                                     @Override
+                                                     public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                                                         super.onScrollStateChanged(recyclerView, newState);
+
+                                                     }
+
+                                                     /**
+                                                      * @param recyclerView
+                                                      * @param dx  >0 向左拖动 《0 享有拖动
+                                                      * @param dy  >0 向上拖动 《0 向下拖动
+                                                      */
+                                                     @Override
+                                                     public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                                                         super.onScrolled(recyclerView, dx, dy);
+
+
+                                                         if(recyclerView.canScrollVertically(1)){
+                                                             Toast.makeText(MainActivity.this, "已经到达顶部", Toast.LENGTH_SHORT).show();
+
+                                                         }
+                                                         if(recyclerView.canScrollVertically(-1)){
+                                                             Toast.makeText(MainActivity.this, "已经到达底部部", Toast.LENGTH_SHORT).show();
+
+                                                         }
+
+
+                                                     }
+                                                 }
+
+
+
+
+            );
+
+            mRecytclerView02.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+                /**
+                 *
+                 * @param recyclerView
+                 * @param newState 当前滚动状态  SCROLL_STATE_IDLE 0：没滚动 ，SCROLL_STATE_DRAGGING 1：手指拉着滚动 ，CROLL_STATE_SETTLING 2 自动惯性滚动
+                 */
+                                                     @Override
+                                                     public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                                                         super.onScrollStateChanged(recyclerView, newState);
+
+                                                     }
+
+                /**
+                 * @param recyclerView
+                 * @param dx  >0 向左拖动 《0 享有拖动
+                 * @param dy  >0 向上拖动 《0 向下拖动
+                 */
+                                                     @Override
+                                                     public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                                                         super.onScrolled(recyclerView, dx, dy);
+
+
+                                                         if(recyclerView.canScrollVertically(1)){
+                                                             Toast.makeText(MainActivity.this, "已经到达顶部", Toast.LENGTH_SHORT).show();
+
+                                                         }
+                                                         if(recyclerView.canScrollVertically(-1)){
+                                                             Toast.makeText(MainActivity.this, "已经到达底部部", Toast.LENGTH_SHORT).show();
+
+                                                         }
+
+
+                                                     }
+                                                 }
+
+
+
+
+            );
+
+
 
             adapter01.setOnclckListener(this);
             adapter02.setOnclckListener(this);
