@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 /**
  *
  */
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnLongClickListener, View.OnClickListener{
     private List<Book>mBookList;
     private OnClickListener listener;
     /**
@@ -44,20 +44,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
         Book book = mBookList.get(position);
         viewHolder.textView.setText(book.getName());
-        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                listener.OnLongClick(position);
-                return true;
-            }
-        });
-
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.OnClick(position);
-            }
-        });
+        viewHolder.itemView.setTag(position);
+        viewHolder.itemView.setOnLongClickListener(this);
+        viewHolder.itemView.setOnClickListener(this);
     }
 
     /**
@@ -89,16 +78,25 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         this.mBookList = mBookList;
     }
 
+    @Override
+    public void onClick(View v) {
+        int position = (Integer)v.getTag();
+        listener.OnClick(position);
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        int position = (Integer)v.getTag();
+        listener.OnClick(position);
+        return true;
+    }
+
     /**
      * ttep 3
      */
       class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.textView)
          TextView textView;
-        private int i = 9;
-        private void add(){
-
-        }
 
 
         private ViewHolder(@NonNull View itemView) {
@@ -106,6 +104,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             ButterKnife.bind(this,itemView);
         }
     }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -120,6 +127,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void setOnclckListener(OnClickListener listener){
         this.listener = listener;
     }
+
+
 
 
 
