@@ -79,13 +79,13 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.OnClic
     }
 
     @Override
-    public void OnClick(int position) {
-        Toast.makeText(MainActivity.this, "OnClick 点击了 =" + position, Toast.LENGTH_LONG).show();
+    public void OnClick(List<Book>mBookList,int position) {
+        Toast.makeText(MainActivity.this, "OnClick 点击了 =" + position+"  name="+mBookList.get(position).getName(), Toast.LENGTH_LONG).show();
 
     }
 
     @Override
-    public void OnLongClick(int position) {
-        Toast.makeText(MainActivity.this, "OnLongClick 点击了 =" + position, Toast.LENGTH_LONG).show();
+    public void OnLongClick(List<Book>mBookList,int position) {
+        Toast.makeText(MainActivity.this, "OnLongClick 点击了 =" + position+"  name="+mBookList.get(position).getName(), Toast.LENGTH_LONG).show();
     }
 }

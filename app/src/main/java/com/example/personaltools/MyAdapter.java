@@ -81,13 +81,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     @Override
     public void onClick(View v) {
         int position = (Integer)v.getTag();
-        listener.OnClick(position);
+        listener.OnClick(mBookList,position);
     }
 
     @Override
     public boolean onLongClick(View v) {
         int position = (Integer)v.getTag();
-        listener.OnClick(position);
+        listener.OnClick(mBookList,position);
         return true;
     }
 
@@ -118,9 +118,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
     public interface OnClickListener {
 
-        void OnClick(int position);
+        void OnClick(List<Book>mBookList,int position);
 
-        void OnLongClick(int position);
+        void OnLongClick(List<Book>mBookList,int position);
 
     }
 
