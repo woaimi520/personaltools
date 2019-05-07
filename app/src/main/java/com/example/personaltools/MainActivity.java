@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -15,8 +16,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity  implements MyAdapter.OnClickListener{
-
+public class MainActivity extends AppCompatActivity implements MyAdapter.OnClickListener {
+    @BindView(R.id.sc)
+    NestedScrollView mNestedScrollView;
     @BindView(R.id.recy_01)
     RecyclerView mRecytclerView01;
     @BindView(R.id.recy_02)
@@ -24,6 +26,9 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.OnClic
 
     private List<Book> mList01 = new ArrayList<Book>();
     private List<Book> mList02 = new ArrayList<Book>();
+    private static final String TAG = "MainActivity";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +72,7 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.OnClic
                                                          super.onScrollStateChanged(recyclerView, newState);
 
 //                                                        int ii= recyclerView.computeVerticalScrollExtent();//显示的
-//                                                         int iii=recyclerView.computeVerticalScrollOffset();//偏移位置 测试最小为0
+                                                         int iii=recyclerView.computeVerticalScrollOffset();//偏移位置 测试最小为0 上方未显示部分
 //                                                         int iiii= recyclerView.computeVerticalScrollRange();//整个高度 包括没有显示的
 
                                                          //1 表示手指向上滑动（屏幕向下滑动）   到底返回false
@@ -75,9 +80,9 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.OnClic
 //                                                         例如：
 //                                                         RecyclerView.canScrollVertically(1)的值表示是否能向下滚动，false表示已经滚动到底部
 //                                                         RecyclerView.canScrollVertically(-1)的值表示是否能向上滚动，false表示已经滚动到顶部
-                                                         if(newState==RecyclerView.SCROLL_STATE_IDLE) {
+                                                         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                                                              if (!recyclerView.canScrollVertically(1)) {
-                                                                 if(recyclerView.computeVerticalScrollExtent()==recyclerView.computeVerticalScrollRange()){
+                                                                 if (recyclerView.computeVerticalScrollExtent() == recyclerView.computeVerticalScrollRange()) {
                                                                      Toast.makeText(MainActivity.this, "已到顶" + newState, Toast.LENGTH_SHORT).show();
                                                                  } else {
                                                                      Toast.makeText(MainActivity.this, "已经到达底部=" + newState, Toast.LENGTH_SHORT).show();
@@ -85,14 +90,13 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.OnClic
                                                              }
 
                                                              if (!recyclerView.canScrollVertically(-1)) {
-                                                                 if(recyclerView.computeVerticalScrollExtent()==recyclerView.computeVerticalScrollRange()){
+                                                                 if (recyclerView.computeVerticalScrollExtent() == recyclerView.computeVerticalScrollRange()) {
                                                                      Toast.makeText(MainActivity.this, "已到顶" + newState, Toast.LENGTH_SHORT).show();
                                                                  } else {
                                                                      Toast.makeText(MainActivity.this, "已经到达顶部=" + newState, Toast.LENGTH_SHORT).show();
                                                                  }
                                                              }
                                                          }
-
 
 
                                                      }
@@ -107,13 +111,8 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.OnClic
                                                          super.onScrolled(recyclerView, dx, dy);
 
 
-
-
-
                                                      }
                                                  }
-
-
 
 
             );
@@ -141,9 +140,9 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.OnClic
 //                                                         例如：
 //                                                         RecyclerView.canScrollVertically(1)的值表示是否能向下滚动，false表示已经滚动到底部
 //                                                         RecyclerView.canScrollVertically(-1)的值表示是否能向上滚动，false表示已经滚动到顶部
-                                                         if(newState==RecyclerView.SCROLL_STATE_IDLE) {
+                                                         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                                                              if (!recyclerView.canScrollVertically(1)) {
-                                                                 if(recyclerView.computeVerticalScrollExtent()==recyclerView.computeVerticalScrollRange()){
+                                                                 if (recyclerView.computeVerticalScrollExtent() == recyclerView.computeVerticalScrollRange()) {
                                                                      Toast.makeText(MainActivity.this, "已到顶" + newState, Toast.LENGTH_SHORT).show();
                                                                  } else {
                                                                      Toast.makeText(MainActivity.this, "已经到达底部=" + newState, Toast.LENGTH_SHORT).show();
@@ -151,14 +150,13 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.OnClic
                                                              }
 
                                                              if (!recyclerView.canScrollVertically(-1)) {
-                                                                 if(recyclerView.computeVerticalScrollExtent()==recyclerView.computeVerticalScrollRange()){
+                                                                 if (recyclerView.computeVerticalScrollExtent() == recyclerView.computeVerticalScrollRange()) {
                                                                      Toast.makeText(MainActivity.this, "已到顶" + newState, Toast.LENGTH_SHORT).show();
                                                                  } else {
                                                                      Toast.makeText(MainActivity.this, "已经到达顶部=" + newState, Toast.LENGTH_SHORT).show();
                                                                  }
                                                              }
                                                          }
-
 
 
                                                      }
@@ -173,34 +171,54 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.OnClic
                                                          super.onScrolled(recyclerView, dx, dy);
 
 
-
-
-
                                                      }
                                                  }
-
-
 
 
             );
 
 
+            mNestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                                                            @Override
+                                                            public void onScrollChange(NestedScrollView nestedScrollView, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
+                                                                if (scrollY > oldScrollY) {
+                                                                    Log.i(TAG, "Scroll DOWN");
+                                                                }
+                                                                if (scrollY < oldScrollY) {
+                                                                    Log.i(TAG, "Scroll UP");
+                                                                }
+
+                                                                if (scrollY == 0) {
+                                                                    Log.i(TAG, "TOP SCROLL");
+                                                                }
+// nestedScrollView.getMeasuredHeight() 显示的高度
+//nestedScrollView.getChildAt(0).getMeasuredHeight()   整个高度 包含未显示的 因为只有一个线性布局 所以是0
+// scrollY 下滑距离
+                                                                if (scrollY == (nestedScrollView.getChildAt(0).getMeasuredHeight() - nestedScrollView.getMeasuredHeight())) {
+                                                                    Log.i(TAG, "BOTTOM SCROLL");
+                                                                }
 
 
+                                                            }
+                                                        }
 
 
-        }catch(Exception e){
+            );
+
+
+        } catch (Exception e) {
             System.out.println("e=" + e);
         }
     }
 
-    public void initBooks(){
-        for (int i=0;i<100;i++){
+    public void initBooks() {
+        for (int i = 0; i < 100; i++) {
             Book book01 = new Book(ChineseName.getName());
             mList01.add(book01);
         }
 
-        for (int i=0;i<30;i++){
+        for (int i = 0; i < 30; i++) {
             Book book02 = new Book(ChineseName.getName());
             mList02.add(book02);
         }
@@ -208,13 +226,13 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.OnClic
     }
 
     @Override
-    public void OnClick(List<Book>mBookList,int position) {
-        Toast.makeText(MainActivity.this, "OnClick other 点击了 =" + position+"  name="+mBookList.get(position).getName(), Toast.LENGTH_LONG).show();
+    public void OnClick(List<Book> mBookList, int position) {
+        Toast.makeText(MainActivity.this, "OnClick other 点击了 =" + position + "  name=" + mBookList.get(position).getName(), Toast.LENGTH_LONG).show();
 
     }
 
     @Override
-    public void OnLongClick(List<Book>mBookList,int position) {
-        Toast.makeText(MainActivity.this, "OnLongClick other 点击了 =" + position+"  name="+mBookList.get(position).getName(), Toast.LENGTH_LONG).show();
+    public void OnLongClick(List<Book> mBookList, int position) {
+        Toast.makeText(MainActivity.this, "OnLongClick other 点击了 =" + position + "  name=" + mBookList.get(position).getName(), Toast.LENGTH_LONG).show();
     }
 }
