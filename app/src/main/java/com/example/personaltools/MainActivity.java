@@ -11,6 +11,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +43,31 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initBooks();
+        initSmartRefreshLayout();
         initRecyclerView();
+
+    }
+
+    public void initSmartRefreshLayout(){
+        //app:srlAccentColo 设置Header主题颜色
+        // app:srlPrimaryColor 设置Footer主题颜色
+        mSmartRefreshLayout.setEnableRefresh(true); //启动刷新
+        mSmartRefreshLayout.setEnableLoadMore(false);//失能下部刷新
+        mSmartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                Toast.makeText(MainActivity.this, "onRefresh", Toast.LENGTH_SHORT).show();
+                mSmartRefreshLayout.finishRefresh();//关闭下拉显示
+            }
+        });
+        mSmartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                Toast.makeText(MainActivity.this, "onLoadMore", Toast.LENGTH_SHORT).show();
+                mSmartRefreshLayout.finishLoadMore();//关闭上拉显示
+            }
+        });
+
 
     }
 
