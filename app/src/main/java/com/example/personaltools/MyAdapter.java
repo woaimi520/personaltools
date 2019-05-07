@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,11 +14,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 /**
  *
  */
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnLongClickListener, View.OnClickListener,View.OnTouchListener{
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnTouchListener{
     private List<Book>mBookList;
     private OnClickListener listener;
     /**
@@ -47,10 +50,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
         Book book = mBookList.get(position);
         viewHolder.textView.setText(book.getName());
         viewHolder.itemView.setTag(position);
-        viewHolder.itemView.setOnLongClickListener(this);
-        viewHolder.itemView.setOnClickListener(this);
         viewHolder.itemView.setOnTouchListener(this);
-        
+        viewHolder.button.setTag(position);
+
     }
 
     /**
@@ -82,25 +84,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
         this.mBookList = mBookList;
     }
 
-    @Override
-    public void onClick(View v) {
-        int position = (Integer)v.getTag();
-        listener.OnClick(mBookList,position);
-    }
 
-    @Override
-    public boolean onLongClick(View v) {
-        int position = (Integer)v.getTag();
-        listener.OnLongClick(mBookList,position);
-        return true;
-    }
+
+
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         int i = event.getAction();
-        if(i==1) {
-            Toast.makeText(v.getContext(), "onTouch", Toast.LENGTH_SHORT).show();
-        }
+//        if(i==1) {
+//            Toast.makeText(v.getContext(), "onTouch", Toast.LENGTH_SHORT).show();
+//        }
         return false;
     }
 
@@ -110,11 +103,38 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
       class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.textView)
          TextView textView;
-
+        @BindView(R.id.button)
+        Button button;
 
         private ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
+        }
+
+        @OnClick({R.id.button,R.id.item})
+        public void onClick(View v) {
+            int position = (Integer) v.getTag();
+            switch (v.getId()) {
+                case R.id.button:
+                    Toast.makeText(v.getContext(), "点击 button position="+position, Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    listener.OnClick(mBookList, position);
+                    break;
+            }
+        }
+        @OnLongClick({R.id.button,R.id.item})
+        public boolean onLongClick(View v){
+            int position = (Integer) v.getTag();
+            switch (v.getId()) {
+                case R.id.button:
+                    Toast.makeText(v.getContext(), "长点击 button position="+position, Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    listener.OnClick(mBookList, position);
+                    break;
+            }
+            return false;
         }
     }
 
