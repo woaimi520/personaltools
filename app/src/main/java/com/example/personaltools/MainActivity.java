@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
     RecyclerView mRecytclerView01;
     @BindView(R.id.recy_02)
     RecyclerView mRecytclerView02;
+    @BindView(R.id.smartRefreshLayout)
+    SmartRefreshLayout mSmartRefreshLayout;
 
     private List<Book> mList01 = new ArrayList<Book>();
     private List<Book> mList02 = new ArrayList<Book>();
