@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -131,6 +132,7 @@ public class MyDialogFragment extends DialogFragment {
         public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int positon) {
 
             viewHolder.button.setTag(positon);
+            viewHolder.textView.setTag(positon);
             Book book = books.get(positon);
             viewHolder.textView.setText(book.getName());
 
@@ -156,12 +158,19 @@ public class MyDialogFragment extends DialogFragment {
 
         }
 
-        @OnClick({R.id.button})
+        @OnClick({R.id.button,R.id.textView})
         public void  onClick(View view){
             int position = (Integer) view.getTag();
-            switch (position) {
+            switch (view.getId()) {
                 case R.id.button:
                     Toast.makeText(getContext(),"onclick + " + position, Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.textView:
+
+                    Toast toast=  Toast.makeText(getActivity(),"onclick + " + position, Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 100, 0);
+                    toast.show();
+
                     break;
             }
 
