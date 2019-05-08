@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -92,7 +93,9 @@ public class MyDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog, null);
         ButterKnife.bind(this, view);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);   //这里是设置里面内容怎么排列的
+        mRecyclerView.setLayoutManager(linearLayoutManager);
 
         myadapter = new Myadapter(books);
 
@@ -128,8 +131,8 @@ public class MyDialogFragment extends DialogFragment {
         public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int positon) {
 
             viewHolder.button.setTag(positon);
-
-
+            Book book = books.get(positon);
+            viewHolder.textView.setText(book.getName());
 
 
         }
@@ -144,7 +147,8 @@ public class MyDialogFragment extends DialogFragment {
     public class MyViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.button)
         Button button;
-
+        @BindView(R.id.textView)
+        TextView textView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
