@@ -58,6 +58,11 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 Toast.makeText(MainActivity.this, "onRefresh", Toast.LENGTH_SHORT).show();
                 mSmartRefreshLayout.finishRefresh();//关闭下拉显示
+                MyDialogFragment myDialogFragment= MyDialogFragment.newInstance(mList01);
+
+                myDialogFragment.show(getSupportFragmentManager(),"pull_dialog");
+
+
             }
         });
         mSmartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -65,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 Toast.makeText(MainActivity.this, "onLoadMore", Toast.LENGTH_SHORT).show();
                 mSmartRefreshLayout.finishLoadMore();//关闭上拉显示
+
             }
         });
 
