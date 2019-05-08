@@ -1,6 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+
     signingConfigs {
         config {
             keyAlias 'qqq007'
@@ -29,6 +35,9 @@ android {
         }
     }
 }
+
+
+
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')

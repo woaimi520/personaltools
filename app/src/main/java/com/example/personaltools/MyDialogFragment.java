@@ -135,7 +135,29 @@ public class MyDialogFragment extends DialogFragment {
             viewHolder.textView.setTag(positon);
             Book book = books.get(positon);
             viewHolder.textView.setText(book.getName());
+            viewHolder.textView.setOnClickListener(v-> {
 
+                    int position = (Integer) v.getTag();
+                    switch (v.getId()) {
+                        case R.id.button:
+                            Toast.makeText(getContext(),"onclick + " + position, Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.textView:
+
+                            Toast toast=  Toast.makeText(getActivity(),"onclick + " + position, Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER, 100, 0);
+                            toast.show();
+
+                            break;
+                    }
+
+
+
+
+            }
+
+
+            );
 
         }
 
@@ -158,7 +180,7 @@ public class MyDialogFragment extends DialogFragment {
 
         }
 
-        @OnClick({R.id.button,R.id.textView})
+        @OnClick({R.id.button})
         public void  onClick(View view){
             int position = (Integer) view.getTag();
             switch (view.getId()) {
