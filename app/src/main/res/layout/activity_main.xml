@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.RecyclerView
+                <com.example.personaltools.SlideRecyclerView
                     android:id="@+id/recy_01"
                     android:layout_width="match_parent"
                     android:layout_height="500dp"

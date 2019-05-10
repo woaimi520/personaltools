@@ -91,9 +91,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         int i = event.getAction();
-//        if(i==1) {
-//            Toast.makeText(v.getContext(), "onTouch", Toast.LENGTH_SHORT).show();
-//        }
+        if(i==MotionEvent.ACTION_DOWN) {
+            Toast.makeText(v.getContext(), "onTouch", Toast.LENGTH_SHORT).show();
+            return true;
+        }
         return false;
     }
 
