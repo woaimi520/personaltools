@@ -3,8 +3,8 @@ apply plugin: 'com.android.application'
 android {
 
     compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     signingConfigs {
@@ -49,8 +49,9 @@ dependencies {
     //recycleView
     implementation 'com.android.support:recyclerview-v7:28+'
     //bind view 框架
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.jakewharton:butterknife:9.0.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0'
+
     //SmartRefreshLayout
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-24'
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-24'//没有使用特殊Header，可以不加这行
