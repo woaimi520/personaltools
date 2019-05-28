@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
         try {
             testSave();
             testFind();
-            testUpdate();
-            testFind();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
@@ -92,17 +90,17 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
     public void testSave()throws Throwable{
 
             ContentResolver contentResolver = this.getBaseContext().getContentResolver();
-            Uri insertUri = Uri.parse("content://com.example.personaltools.Books123/123245585654");
+            Uri insertUri = Uri.parse("content://com.example.personaltools.personalinformation/info");
             ContentValues values = new ContentValues();
-            values.put("title", "123456");
-            values.put("isbn", "17623430006");
+            values.put("name", "renyu");
+            values.put("code", "500221~~~~~12");
             Uri uri = contentResolver.insert(insertUri, values);
             Log.i(TAG, uri.toString());
 
     }
     public void testUpdate() throws Throwable{
         ContentResolver contentResolver = this.getBaseContext().getContentResolver();
-        Uri updateUri = Uri.parse("content://net.manoel.provider.Books/books1");
+        Uri updateUri = Uri.parse("content://com.example.personaltools.personalinformation");
         ContentValues values = new ContentValues();
         values.put("title", "linjiqin");
         contentResolver.update(updateUri, values, null, null);
@@ -111,13 +109,13 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
     public void testFind() throws Throwable{
         ContentResolver contentResolver = this.getBaseContext().getContentResolver();
         //Uri uri = Uri.parse("content://com.ljq.provider.personprovider/person");
-        Uri uri = Uri.parse("content://net.manoel.provider.Books/books");
+        Uri uri = Uri.parse("content://com.example.personaltools.personalinformation/info");
         Cursor cursor = contentResolver.query(uri, null, null, null, "id asc");
         while(cursor.moveToNext()){
             int personid = cursor.getInt(cursor.getColumnIndex("_id"));
-            String name = cursor.getString(cursor.getColumnIndex("title"));
-            String phone = cursor.getString(cursor.getColumnIndex("isbn"));
-            Log.i(TAG, "_id="+ personid + ",title="+ name+ ",isbn="+ phone);
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            String code  = cursor.getString(cursor.getColumnIndex("code"));
+            Log.i(TAG, "_id="+ personid + ",name="+ name+ ",code="+ code);
         }
         cursor.close();
     }

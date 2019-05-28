@@ -19,10 +19,6 @@ import android.text.TextUtils;
 public class BooksProvider extends ContentProvider {
     static final String PROVIDER_NAME =
             "com.example.personaltools.personalinformation";
-    static final String _ID = "_id";
-    static final String TITLE = "title";
-    static final String ISBN = "isbn";
-
     static final int MATCH_INFO = 1;
     static final int BOOK_ID = 2;
     static final Uri CONTENT_URI = Uri.parse("content://" + PROVIDER_NAME + "/info");
@@ -45,7 +41,7 @@ public class BooksProvider extends ContentProvider {
     static final int DATABASE_VERSION = 1;
     static final String DATABASE_CREATE = "create table " + DATABASE_TABLE +
             " (_id integer primary key autoincrement, "
-            + "title text not null, isbn text not null);";
+            + "name text not null, code text not null);";  //这行是加列名
 
 
 
@@ -65,7 +61,7 @@ private static class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS titles");
+            db.execSQL("DROP TABLE IF EXISTS names");
         onCreate(db);
     }
 }
