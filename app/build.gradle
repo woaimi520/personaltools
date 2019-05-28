@@ -59,4 +59,6 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-24'//没有使用特殊Header，可以不加这行
     //Gson
     implementation 'com.google.code.gson:gson:2.8.5'
+    //数据库查看
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.0'
 }

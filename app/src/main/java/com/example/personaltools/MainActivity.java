@@ -1,5 +1,9 @@
 package com.example.personaltools;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -46,6 +50,14 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
         initSmartRefreshLayout();
         initRecyclerView();
 
+        try {
+            testSave();
+            testFind();
+            testUpdate();
+            testFind();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 
     public void initSmartRefreshLayout(){
@@ -75,6 +87,45 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
         });
 
 
+    }
+
+    public void testSave()throws Throwable{
+
+            ContentResolver contentResolver = this.getBaseContext().getContentResolver();
+            Uri insertUri = Uri.parse("content://com.example.personaltools.Books123/123245585654");
+            ContentValues values = new ContentValues();
+            values.put("title", "123456");
+            values.put("isbn", "17623430006");
+            Uri uri = contentResolver.insert(insertUri, values);
+            Log.i(TAG, uri.toString());
+
+    }
+    public void testUpdate() throws Throwable{
+        ContentResolver contentResolver = this.getBaseContext().getContentResolver();
+        Uri updateUri = Uri.parse("content://net.manoel.provider.Books/books1");
+        ContentValues values = new ContentValues();
+        values.put("title", "linjiqin");
+        contentResolver.update(updateUri, values, null, null);
+    }
+
+    public void testFind() throws Throwable{
+        ContentResolver contentResolver = this.getBaseContext().getContentResolver();
+        //Uri uri = Uri.parse("content://com.ljq.provider.personprovider/person");
+        Uri uri = Uri.parse("content://net.manoel.provider.Books/books");
+        Cursor cursor = contentResolver.query(uri, null, null, null, "id asc");
+        while(cursor.moveToNext()){
+            int personid = cursor.getInt(cursor.getColumnIndex("_id"));
+            String name = cursor.getString(cursor.getColumnIndex("title"));
+            String phone = cursor.getString(cursor.getColumnIndex("isbn"));
+            Log.i(TAG, "_id="+ personid + ",title="+ name+ ",isbn="+ phone);
+        }
+        cursor.close();
+    }
+
+    public void testDelete() throws Throwable{
+        ContentResolver contentResolver = this.getBaseContext().getContentResolver();
+        Uri uri = Uri.parse("content://net.manoel.provider.Books/books/1");
+        contentResolver.delete(uri, null, null);
     }
 
     public void initRecyclerView() {
