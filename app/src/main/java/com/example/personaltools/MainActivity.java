@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
         Uri updateUri = Uri.parse("content://com.example.personaltools.personalinformation/info");
         ContentValues values = new ContentValues();
         values.put("code", "1234");
-        contentResolver.update(updateUri, values, null, null);
+        contentResolver.update(updateUri, values, "_id =5", null);
     }
 
     public void testFind() throws Throwable{
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
     public void testDelete() throws Throwable{
         ContentResolver contentResolver = this.getBaseContext().getContentResolver();
         Uri uri = Uri.parse("content://com.example.personaltools.personalinformation/info");
-        contentResolver.delete(uri, null, null);
+        contentResolver.delete(uri, "_id=6", null);
     }
 
     public void initRecyclerView() {
