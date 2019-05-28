@@ -24,6 +24,7 @@ public class BooksProvider extends ContentProvider {
     static final Uri CONTENT_URI = Uri.parse("content://" + PROVIDER_NAME + "/info");
 
     private static final UriMatcher uriMatcher;
+
     static {
         /*其中第一个参数authority:就是URI对应的authority
           path:就是我们在URI中 authority后的那一串
@@ -44,29 +45,27 @@ public class BooksProvider extends ContentProvider {
             + "name text not null, code text not null);";  //这行是加列名
 
 
+    private static class DatabaseHelper extends SQLiteOpenHelper {
+
+        DatabaseHelper(Context context) {
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
+        }
 
 
-private static class DatabaseHelper extends SQLiteOpenHelper {
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            db.execSQL(DATABASE_CREATE);
+        }
 
-    DatabaseHelper(Context context){
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
-    }
-
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(DATABASE_CREATE);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             db.execSQL("DROP TABLE IF EXISTS names");
-        onCreate(db);
+            onCreate(db);
+        }
     }
-}
 
-//provider oncreat
+    //provider oncreat
     @Override
     public boolean onCreate() {
         Context context = getContext();
@@ -77,37 +76,36 @@ private static class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
 
-         switch (uriMatcher.match(uri)){
-             case MATCH_INFO:
-                 return "vnd.android.cursor.dir/vnd.manoel.books ";
-             case BOOK_ID:
-                 return "vnd.android.cursor.item/vnd.manoel.books ";
-                 default:
-                     throw new IllegalArgumentException("Unsupported URI:" + uri);
-         }
+        switch (uriMatcher.match(uri)) {
+            case MATCH_INFO:
+                return "vnd.android.cursor.dir/vnd.manoel.books ";
+            case BOOK_ID:
+                return "vnd.android.cursor.item/vnd.manoel.books ";
+            default:
+                throw new IllegalArgumentException("Unsupported URI:" + uri);
+        }
     }
 
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
 
-    switch (uriMatcher.match(uri)){
-        case MATCH_INFO:
-            Long rowID = persDB.insert(DATABASE_TABLE,null, values);
-            if(rowID>0){
-                Uri retUri = ContentUris.withAppendedId(CONTENT_URI, rowID);
-                return retUri;
-            }
-            break;
+        switch (uriMatcher.match(uri)) {
+            case MATCH_INFO:
+                Long rowID = persDB.insert(DATABASE_TABLE, null, values);
+                if (rowID > 0) {
+                    Uri retUri = ContentUris.withAppendedId(CONTENT_URI, rowID);
+                    return retUri;
+                }
+                break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
 
-       }
+        }
         return null;
     }
 
@@ -117,17 +115,16 @@ private static class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteQueryBuilder sqLiteBuilder = new SQLiteQueryBuilder();
         sqLiteBuilder.setTables((DATABASE_TABLE));
 
-          switch(uriMatcher.match(uri)){
+        switch (uriMatcher.match(uri)) {
 
-              case MATCH_INFO:
-                  sqLiteBuilder.setTables(DATABASE_TABLE);
+            case MATCH_INFO:
+                sqLiteBuilder.setTables(DATABASE_TABLE);
+                break;
 
-                  break;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
 
-              default:
-                  throw new IllegalArgumentException("Unknown URI " + uri);
-
-          }
+        }
 
 
         Cursor cursor = sqLiteBuilder.query(persDB, projection, selection, selectionArgs, null, null, null);
@@ -137,21 +134,32 @@ private static class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-
-
-
-
-
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
 
-        return 1;
+        int count = 0;
+        switch (uriMatcher.match(uri)) {
+            case MATCH_INFO:
+                count = persDB.delete(DATABASE_TABLE, selection, selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+
+        return count;
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
+        int count = 0;
+        switch (uriMatcher.match(uri)) {
+            case MATCH_INFO:
+                count = persDB.update(DATABASE_TABLE, values, selection, selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
 
-
-        return 1;
+        }
+        return count;
     }
 }

@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
         try {
             testSave();
             testFind();
+            testUpdate();
+            testDelete();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
@@ -100,9 +102,9 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
     }
     public void testUpdate() throws Throwable{
         ContentResolver contentResolver = this.getBaseContext().getContentResolver();
-        Uri updateUri = Uri.parse("content://com.example.personaltools.personalinformation");
+        Uri updateUri = Uri.parse("content://com.example.personaltools.personalinformation/info");
         ContentValues values = new ContentValues();
-        values.put("title", "linjiqin");
+        values.put("code", "1234");
         contentResolver.update(updateUri, values, null, null);
     }
 
@@ -122,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
 
     public void testDelete() throws Throwable{
         ContentResolver contentResolver = this.getBaseContext().getContentResolver();
-        Uri uri = Uri.parse("content://net.manoel.provider.Books/books/1");
+        Uri uri = Uri.parse("content://com.example.personaltools.personalinformation/info");
         contentResolver.delete(uri, null, null);
     }
 
