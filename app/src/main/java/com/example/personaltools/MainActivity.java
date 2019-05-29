@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -34,11 +35,12 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
     RecyclerView mRecytclerView02;
     @BindView(R.id.smartRefreshLayout)
     SmartRefreshLayout mSmartRefreshLayout;
-
+    PersonInfoObserver personInfoObserver;
+    Uri insertUri=  Uri.parse("content://com.example.personaltools.personalinformation/info");
     private List<Book> mList01 = new ArrayList<Book>();
     private List<Book> mList02 = new ArrayList<Book>();
     private static final String TAG = "MainActivity";
-
+    ContentResolver resolver;
 
 
     @Override
@@ -51,6 +53,11 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
         initRecyclerView();
 
         try {
+            personInfoObserver = new PersonInfoObserver(new Handler());
+             resolver = this.getContentResolver();
+
+            resolver.registerContentObserver(insertUri, true, personInfoObserver);
+
             testSave();
             testFind();
             testUpdate();
@@ -126,6 +133,13 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
         ContentResolver contentResolver = this.getBaseContext().getContentResolver();
         Uri uri = Uri.parse("content://com.example.personaltools.personalinformation/info");
         contentResolver.delete(uri, "_id=6", null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        resolver.unregisterContentObserver(personInfoObserver);
+
     }
 
     public void initRecyclerView() {
@@ -316,6 +330,7 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
     @Override
     public void OnClick(List<Book> mBookList, int position) {
         Toast.makeText(MainActivity.this, "OnClick other 点击了 =" + position + "  name=" + mBookList.get(position).getName(), Toast.LENGTH_LONG).show();
+
 
     }
 

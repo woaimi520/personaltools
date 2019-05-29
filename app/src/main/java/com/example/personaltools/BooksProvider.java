@@ -80,14 +80,8 @@ public class BooksProvider extends ContentProvider {
     @Override
     public String getType(@NonNull Uri uri) {
 
-        switch (uriMatcher.match(uri)) {
-            case MATCH_INFO:
-                return "vnd.android.cursor.dir/vnd.manoel.books ";
-            case BOOK_ID:
-                return "vnd.android.cursor.item/vnd.manoel.books ";
-            default:
-                throw new IllegalArgumentException("Unsupported URI:" + uri);
-        }
+        return null;
+
     }
 
     @Nullable
@@ -99,6 +93,8 @@ public class BooksProvider extends ContentProvider {
                 Long rowID = persDB.insert(DATABASE_TABLE, null, values);
                 if (rowID > 0) {
                     Uri retUri = ContentUris.withAppendedId(CONTENT_URI, rowID);
+                    getContext().getContentResolver().notifyChange(CONTENT_URI, null);
+
                     return retUri;
                 }
                 break;
@@ -113,7 +109,6 @@ public class BooksProvider extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         SQLiteQueryBuilder sqLiteBuilder = new SQLiteQueryBuilder();
-        sqLiteBuilder.setTables((DATABASE_TABLE));
 
         switch (uriMatcher.match(uri)) {
 
@@ -128,6 +123,9 @@ public class BooksProvider extends ContentProvider {
 
 
         Cursor cursor = sqLiteBuilder.query(persDB, projection, selection, selectionArgs, null, null, null);
+
+
+
 
 
         return cursor;
