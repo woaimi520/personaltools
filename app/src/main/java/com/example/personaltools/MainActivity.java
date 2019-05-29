@@ -19,6 +19,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
     private List<Book> mList02 = new ArrayList<Book>();
     private static final String TAG = "MainActivity";
     ContentResolver resolver;
-
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,22 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
              resolver = this.getContentResolver();
 
             resolver.registerContentObserver(insertUri, true, personInfoObserver);
+
+
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    SmartRefreshLayout a = mSmartRefreshLayout;
+
+                }
+            }, 1 * 60 * 1000);
+
+
+
+
+
+
+
 
             testSave();
             testFind();
@@ -139,6 +156,8 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
     protected void onDestroy() {
         super.onDestroy();
         resolver.unregisterContentObserver(personInfoObserver);
+        RefWatcher refWatcher = Myappllication.getRefWatcher(this);
+        refWatcher.watch(this);
 
     }
 
@@ -156,8 +175,8 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
             mRecytclerView02.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
 
-            MyAdapter adapter01 = new MyAdapter(mList01);
-            MyAdapter adapter02 = new MyAdapter(mList02);
+            MyAdapter adapter01 = new MyAdapter(mList01,this);
+            MyAdapter adapter02 = new MyAdapter(mList02,this);
 
 
             adapter01.setOnclckListener(this);
@@ -330,7 +349,6 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
     @Override
     public void OnClick(List<Book> mBookList, int position) {
         Toast.makeText(MainActivity.this, "OnClick other 点击了 =" + position + "  name=" + mBookList.get(position).getName(), Toast.LENGTH_LONG).show();
-
 
     }
 

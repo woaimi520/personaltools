@@ -1,5 +1,7 @@
 package com.example.personaltools;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import butterknife.OnLongClick;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnTouchListener{
     private List<Book>mBookList;
     private OnClickListener listener;
+    private Context context;
     /**
      * ttep 2
      * 加载item 的布局 创建viewHolder实例
@@ -80,8 +83,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
      * ttep 0
      * @param mBookList
      */
-    public MyAdapter(List<Book> mBookList) {
+    public MyAdapter(List<Book> mBookList, Context context) {
         this.mBookList = mBookList;
+        this.context = context;
     }
 
 
@@ -118,6 +122,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
             switch (v.getId()) {
                 case R.id.button:
                     Toast.makeText(v.getContext(), "点击 button position="+position, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, TestActivity.class);
+                    context.startActivity(intent);
+
                     break;
                 default:
                     listener.OnClick(mBookList, position);

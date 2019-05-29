@@ -61,4 +61,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     //数据库查看
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.0'
+    //内存检测
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
+    // Optional, if you use support library fragments:
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
 }
