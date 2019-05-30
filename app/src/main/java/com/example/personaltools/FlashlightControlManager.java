@@ -1,6 +1,7 @@
 package com.example.personaltools;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
@@ -11,6 +12,7 @@ import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 public class FlashlightControlManager implements SurfaceHolder.Callback{
     private Context mContext;
@@ -18,151 +20,119 @@ public class FlashlightControlManager implements SurfaceHolder.Callback{
     private CameraManager manager;
     private String cameraId;
     //android M 以上 end
+
     //android M 以下 start
     private Camera mCamera;
-    private SurfaceView mSurfaceView;
-    private SurfaceHolder mSurfaceHolder;
-    private WindowManager mWindowManager;
-    private WindowManager.LayoutParams mLayoutParams;
     private Camera.Parameters mParameters;
     //android M 以下 end
-    private Handler mHandler = new Handler();
+
     private FlashlightControlManager() {
         mContext = MyAppllication.getContext();
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            initAboveM();
-        }else{
-            initUnderM();
-        }
     }
-
-    private void initAboveM(){
-        manager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
-        try {
-            cameraId = manager.getCameraIdList()[0];
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private void initUnderM(){
-        mSurfaceView = new SurfaceView(mContext) {
-            @Override
-            protected void onAttachedToWindow() {
-                /**
-                 * avoid NullPointerException in SurfaceView.onAttachedToWindow
-                 */
-                if (this.getParent() != null) {
-                    super.onAttachedToWindow();
-                }
-            }
-        };
-
-        mSurfaceView.setZOrderOnTop(true);
-        mSurfaceHolder = mSurfaceView.getHolder();
-        mSurfaceHolder.setFormat(PixelFormat.TRANSPARENT);
-
-        mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-        int type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
-        mLayoutParams = new WindowManager.LayoutParams(1, 1, type, 65832,
-                PixelFormat.TRANSLUCENT);
-        mLayoutParams.gravity = Gravity.LEFT | Gravity.BOTTOM;
-        setupCamera();
-    }
-
-    private void setupCamera() {
-        try {
-            mCamera = Camera.open();
-            mParameters = mCamera.getParameters();
-            mWindowManager.addView(mSurfaceView, mLayoutParams);
-            mSurfaceHolder.addCallback(this);
-        } catch (WindowManager.BadTokenException e) {
-            if (e.getMessage().contains("permission denied for window type 2038")) {
-
-            }else{
-                e.printStackTrace();
-            }
-        } catch(IllegalStateException e){
-            if(e.getMessage().contains("has already been added to the window manager")){
-                mSurfaceHolder.addCallback(this);
-            }else{
-                e.printStackTrace();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-    }
-
-
-
 
     public static FlashlightControlManager getInstance() {
         return ManagerHolder.manager;
     }
 
+    /**
+     * 开启闪光灯
+     */
     public void openFlashlight() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
 
-            try {
-                manager.setTorchMode(cameraId,true);
-            } catch (CameraAccessException e) {
-                e.printStackTrace();
-            }
-
-        }else{
-
-            mHandler.post(() -> {
-                // 开启电筒的过程需要放到子线程（和初始化分开，否则电筒不亮）
-                if ( mCamera != null) {
+        if(isHaveFlash()) {
+            if (isVerGreaterOrEqualM()) {
+                if(manager==null) {
                     try {
+                        manager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
+                        cameraId = manager.getCameraIdList()[0];
+                        manager.setTorchMode(cameraId, true);
+                    } catch (CameraAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                if (mCamera == null) {
+                    try {
+                        mCamera = Camera.open();
+                        mParameters = mCamera.getParameters();
                         mParameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                        mCamera.setPreviewDisplay(mSurfaceHolder);
                         mCamera.setParameters(mParameters);
-                        mCamera.startPreview();
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            });
+//            });
 
+            }
+        }else{
+            Toast.makeText(mContext, "设备没有闪光灯", Toast.LENGTH_SHORT).show();
         }
-
     }
 
+    /**
+     * 关闭闪光灯
+     */
     public void closeFlashlight() {
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-
-                try {
-                    manager.setTorchMode(cameraId,false);
-
-                } catch (CameraAccessException e) {
-                    e.printStackTrace();
+        if(isHaveFlash()) {
+            if (isVerGreaterOrEqualM()) {
+                if (manager != null) {
+                    try {
+                        cameraId = manager.getCameraIdList()[0];
+                        manager.setTorchMode(cameraId, false);
+                        manager = null;
+                    } catch (CameraAccessException e) {
+                        e.printStackTrace();
+                        manager = null;
+                    }
                 }
-        } else if(mCamera != null) {
-            try {
-                mParameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-                mCamera.setParameters(mParameters);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } else if (mCamera != null) {
+                try {
+                    mParameters = mCamera.getParameters();
+                    mParameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                    mCamera.setParameters(mParameters);
+                    mCamera.release();
+                    mCamera = null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mCamera = null;
+                }
             }
+        }else{
+            Toast.makeText(mContext, "设备没有闪光灯", Toast.LENGTH_SHORT).show();
         }
 
     }
 
-
-
-
-    public  boolean getFlashlightStatus(){
-
-
-
-
-        return false;
+    /**
+     * 判断是否为6.0以上系统
+     * @return true 6.0及以上  false 6.0以下
+     */
+    private boolean isVerGreaterOrEqualM(){
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
+
+    /**
+     * 是否设备有闪光灯
+     * @return true 有  false 没有
+     */
+    private boolean isHaveFlash(){
+        return mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+    }
+
+    /**
+     * 判断是否打开闪光灯
+     * @return true 闪光灯关闭  false 闪光灯开启
+     */
+    public boolean isFlashOff(){
+          if(isVerGreaterOrEqualM()){
+              return manager == null;
+          }else{
+              return mCamera == null;
+          }
+    }
+
+
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {

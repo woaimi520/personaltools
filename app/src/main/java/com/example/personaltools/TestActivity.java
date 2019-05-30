@@ -59,9 +59,9 @@ public class TestActivity extends AppCompatActivity {
                      FlashlightControlManager.getInstance().closeFlashlight();
                      break;
                  case R.id.button_status:
-                     boolean isOpen = false;
-                     isOpen= FlashlightControlManager.getInstance().getFlashlightStatus();
-                     mTextView.setText("闪光灯="+(isOpen?"打开":"关闭"));
+                     boolean isOff = false;
+                     isOff= FlashlightControlManager.getInstance().isFlashOff();
+                     mTextView.setText("闪光灯="+(isOff?"关闭":"打开"));
                      break;
 
              }
