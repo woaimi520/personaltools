@@ -156,8 +156,9 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnClick
     protected void onDestroy() {
         super.onDestroy();
         resolver.unregisterContentObserver(personInfoObserver);
-        RefWatcher refWatcher = Myappllication.getRefWatcher(this);
-        refWatcher.watch(this);
+        RefWatcher refWatcher = MyAppllication.getRefWatcher(this);
+        mHandler.removeCallbacksAndMessages(null);
+       // refWatcher.watch(this);
 
     }
 

@@ -108,7 +108,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
       class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.textView)
          TextView textView;
-        @BindView(R.id.button)
+        @BindView(R.id.button_open)
         Button button;
 
         private ViewHolder(@NonNull View itemView) {
@@ -116,11 +116,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
             ButterKnife.bind(this,itemView);
         }
 
-        @OnClick({R.id.button,R.id.item})
+        @OnClick({R.id.button_open,R.id.item})
         public void onClick(View v) {
             int position = (Integer) v.getTag();
             switch (v.getId()) {
-                case R.id.button:
+                case R.id.button_open:
                     Toast.makeText(v.getContext(), "点击 button position="+position, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(context, TestActivity.class);
                     context.startActivity(intent);
@@ -131,11 +131,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
                     break;
             }
         }
-        @OnLongClick({R.id.button,R.id.item})
+        @OnLongClick({R.id.button_open,R.id.item})
         public boolean onLongClick(View v){
             int position = (Integer) v.getTag();
             switch (v.getId()) {
-                case R.id.button:
+                case R.id.button_open:
                     Toast.makeText(v.getContext(), "长点击 button position="+position, Toast.LENGTH_SHORT).show();
                     break;
                 default:

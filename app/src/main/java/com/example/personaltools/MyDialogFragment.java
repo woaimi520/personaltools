@@ -139,7 +139,7 @@ public class MyDialogFragment extends DialogFragment {
 
                     int position = (Integer) v.getTag();
                     switch (v.getId()) {
-                        case R.id.button:
+                        case R.id.button_open:
                             Toast.makeText(getContext(),"onclick + " + position, Toast.LENGTH_SHORT).show();
                             break;
                         case R.id.textView:
@@ -169,7 +169,7 @@ public class MyDialogFragment extends DialogFragment {
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.button)
+        @BindView(R.id.button_open)
         Button button;
         @BindView(R.id.textView)
         TextView textView;
@@ -180,11 +180,11 @@ public class MyDialogFragment extends DialogFragment {
 
         }
 
-        @OnClick({R.id.button})
+        @OnClick({R.id.button_open})
         public void  onClick(View view){
             int position = (Integer) view.getTag();
             switch (view.getId()) {
-                case R.id.button:
+                case R.id.button_open:
                     Toast.makeText(getContext(),"onclick + " + position, Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.textView:
